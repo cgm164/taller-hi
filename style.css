@@ -8,7 +8,8 @@
     --transition: all 0.3s ease;
 }
 
-body.light-theme {
+body.light-theme,
+html.light-theme {
     --bg-color: #ffffff;
     --text-color: #1a1a1a;
     --accent-color: #e0e0e0;

@@ -8,13 +8,24 @@
     <meta name="description"
         content="Portfolio minimalista de Carlos. Diseño en blanco y negro centrado en la tipografía y el contenido.">
     <link rel="stylesheet" href="style.css">
+    <script>
+        // Prevent FOUC (Flash of Unstyled Content) by applying theme before body renders
+        (function () {
+            const savedTheme = localStorage.getItem('preferred-theme');
+            const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            if (savedTheme === 'light' || (!savedTheme && systemPrefersLight)) {
+                document.documentElement.classList.add('light-theme');
+            }
+        })();
+    </script>
 </head>
 
 <body>
-    <button class="theme-toggle" id="theme-toggle">Modo Claro</button>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema de color" aria-pressed="false">Modo
+        Claro</button>
     <div class="container">
         <header id="home">
-            <h1 id="name">Carlos</h1>
+            <h1 id="name">Carlos Garrido</h1>
             <p class="subtitle">Creative Developer & Minimalist Enthusiast</p>
             <nav id="main-nav">
                 <a href="#about">Sobre mí</a>
@@ -65,15 +76,22 @@
     <script>
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
+        const html = document.documentElement;
+
+        // Sync button text and aria-pressed on load
+        function updateToggleButton() {
+            const isLight = html.classList.contains('light-theme');
+            themeToggle.textContent = isLight ? 'Modo Oscuro' : 'Modo Claro';
+            themeToggle.setAttribute('aria-pressed', isLight);
+        }
+
+        // Initialize state
+        updateToggleButton();
 
         themeToggle.addEventListener('click', () => {
-            body.classList.toggle('light-theme');
-
-            if (body.classList.contains('light-theme')) {
-                themeToggle.textContent = 'Modo Oscuro';
-            } else {
-                themeToggle.textContent = 'Modo Claro';
-            }
+            const isLight = html.classList.toggle('light-theme');
+            localStorage.setItem('preferred-theme', isLight ? 'light' : 'dark');
+            updateToggleButton();
         });
     </script>
 </body>
