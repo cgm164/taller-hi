@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carlos | Portfolio</title>
-    <meta name="description" content="Portfolio minimalista de Carlos. Diseño en blanco y negro centrado en la tipografía y el contenido.">
+    <meta name="description"
+        content="Portfolio minimalista de Carlos. Diseño en blanco y negro centrado en la tipografía y el contenido.">
     <link rel="stylesheet" href="style.css">
+    <script>
+        // Prevent FOUC (Flash of Unstyled Content) by applying theme before body renders
+        (function () {
+            const savedTheme = localStorage.getItem('preferred-theme');
+            const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            if (savedTheme === 'light' || (!savedTheme && systemPrefersLight)) {
+                document.documentElement.classList.add('light-theme');
+            }
+        })();
+    </script>
 </head>
+
 <body>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema de color" aria-pressed="false">Modo
+        Claro</button>
     <div class="container">
         <header id="home">
-            <h1 id="name">Carlos</h1>
+            <h1 id="name">Carlos Garrido</h1>
             <p class="subtitle">Creative Developer & Minimalist Enthusiast</p>
             <nav id="main-nav">
                 <a href="#about">Sobre mí</a>
@@ -22,9 +37,11 @@
         <section id="about">
             <h2>Sobre mí</h2>
             <div class="about-text">
-                <p>Hola, soy Carlos. Me apasiona simplificar lo complejo a través del diseño y el código. Creo en la fuerza de la simplicidad y en el impacto de una buena tipografía.</p>
+                <p>Hola, soy Carlos. Me apasiona simplificar lo complejo a través del diseño y el código. Creo en la
+                    fuerza de la simplicidad y en el impacto de una buena tipografía.</p>
                 <br>
-                <p>Mi enfoque se centra en crear experiencias digitales que no solo funcionen perfectamente, sino que también transmitan una sensación de orden y elegancia.</p>
+                <p>Mi enfoque se centra en crear experiencias digitales que no solo funcionen perfectamente, sino que
+                    también transmitan una sensación de orden y elegancia.</p>
             </div>
         </section>
 
@@ -56,5 +73,27 @@
             <p>© 2024 Carlos. Menos es más.</p>
         </footer>
     </div>
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const html = document.documentElement;
+
+        // Sync button text and aria-pressed on load
+        function updateToggleButton() {
+            const isLight = html.classList.contains('light-theme');
+            themeToggle.textContent = isLight ? 'Modo Oscuro' : 'Modo Claro';
+            themeToggle.setAttribute('aria-pressed', isLight);
+        }
+
+        // Initialize state
+        updateToggleButton();
+
+        themeToggle.addEventListener('click', () => {
+            const isLight = html.classList.toggle('light-theme');
+            localStorage.setItem('preferred-theme', isLight ? 'light' : 'dark');
+            updateToggleButton();
+        });
+    </script>
 </body>
+
 </html>
